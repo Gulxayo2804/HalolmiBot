@@ -12,19 +12,10 @@ exports.createOne = async (req, res) => {
     image: `/public/uploads/foods/${req.file.filename}`,
     halolmi:req.body.halolmi
   })
-  result.save()
-    .then(() => {
-      res.status(201).json({
-        success: true,
-        data: result
-      })
-    })
-    .catch((error) => {
-      res.status(400).json({
-        success: false,
-        error: error
-      })
-    })
+  await result.save()
+        .then(() => {res.status(201).json({ success: true, data: result})})
+        .catch((error) => {res.status(400).json({ success: false, error: error })})
+ 
 }
 
 
@@ -38,17 +29,12 @@ exports.getAll = async (req, res) => {
   res.send(result)
 }
 
-// exports.getName = async (req, res) => {
-//   const result = await Foods.find()
-//   for(let i=0; i<result.length; i++){
-//     if(result[i].name==="aroq"){
-//       res.status(200).json({ success: true, data: result[i] })
-//     }else{
-//       res.send("Bunday mahsulot yuq. "+result[i].name)
-//     }
-//   }
-
-// }
+exports.getName = async (req, res) => {
+ const result = await Foods.aggregate(
+  [ { $match : { name: req.params.name} } ]
+);
+res.status(200).json({ success: true, data: result })
+}
 
 exports.getOne = async (req, res) => {
   const result = await Foods.findById({ _id: req.params.id })

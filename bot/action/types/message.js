@@ -5,32 +5,32 @@ const Action = require('../../../models/ActionsModel')
 const axios = require('axios')
 
 const {bot} =require('../../core/bot')
-const url='http://localhost:5000/api/foods/all';
+
 const composer = new Composer()
 
 composer.on('text', async (ctx) => {
   let habar = ctx.message.text;
-  let data= await axios.get(url).then(res =>{
+  let data= await axios.get(`http://localhost:5000/api/foods/getName/${habar.toLowerCase()}`).then(res =>{
     return res.data
   })
 
-  ctx.replyWithPhoto({ url: `http://localhost:5000${data[0].image}`}).then()
+  let result= await axios.get(`http://localhost:5000/api/action/getName/${habar.toLowerCase()}`).then(res =>{
+    return res.data
+  })
 
-  ctx.replyWithHTML(`<b>Mahsulot nomi: </b> ${data[0].name}\n`+
-  `<b>Ma'lumot: </b>${data[0].description}\n`+
-  `<b>Halolmi: </b> ${data[0].halolmi}\n`
-  ).then()
+  ctx.replyWithPhoto({ url: `http://localhost:5000${data?.data[0]?.image}`}).then()
+  ctx.replyWithHTML(`<b>Mahsulot nomi: </b> ${data?.data[0]?.name}\n`+
+  `<b>Ma'lumot: </b>${data?.data[0]?.description}\n`+
+  `<b>Halolmi: </b> ${data?.data[0]?.halolmi}\n`
+  ).then() 
+
+  ctx.replyWithPhoto({ url: `http://localhost:5000${result?.data[0]?.image}`}).then()
+  ctx.replyWithHTML(`<b>Amal nomi: </b> ${result?.data[0]?.name}\n`+
+  `<b>Ma'lumot: </b>${result?.data[0]?.description}\n`+
+  `<b>Halolmi: </b> ${result?.data[0]?.halolmi}\n`
+  ).then() 
 
 
-
-  const a=data[0].name;
-
-
-  // console.log( habar)
-  if( a == "salom")
-  {console.log(data[0].name)}
-  else{console.log('yuq')}
-   
 })
  
 bot.use(composer.middleware())

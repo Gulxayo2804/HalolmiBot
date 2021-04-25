@@ -12,19 +12,10 @@ exports.createOne = async (req, res, next) => {
     image: `/public/uploads/action/${req.file.filename}`,
     halolmi:req.body.halolmi
   })
-  result.save()
-    .then(() => {
-      res.status(201).json({
-        success: true,
-        data: result
-      })
-    })
-    .catch((error) => {
-      res.status(400).json({
-        success: false,
-        error: error
-      })
-    })
+  await result.save()
+  .then(() => {res.status(201).json({ success: true, data: result})})
+  .catch((error) => {res.status(400).json({ success: false, error: error })})
+
 }
 
 
@@ -75,5 +66,12 @@ exports.deleteOne = async (req, res, next) => {
     })
 }
 
+exports.getName = async (req, res) => {
+  const result = await Actions.aggregate(
+   [ { $match : { name: req.params.name} } ]
+ );
+ res.status(200).json({ success: true, data: result })
+ 
+ }
 
 

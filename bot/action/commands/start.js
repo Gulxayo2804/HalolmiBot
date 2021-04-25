@@ -16,14 +16,15 @@ composer.start( ctx =>{
     ).then()
 })
 
+
 composer.action('food', ctx =>{
   ctx.replyWithHTML(`<b>Mahsulotni nomini kiriting: </b>\n`
-  ).then()
+  ).then(()=> console.log(ctx))
 })
 
 composer.action('amal', ctx =>{
   ctx.replyWithHTML(`<b>Amalni nomini kiriting: </b>\n`
-  ).then()
+  ).then(()=> console.log(ctx))
 })
 
 

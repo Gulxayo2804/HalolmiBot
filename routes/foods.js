@@ -19,7 +19,7 @@ const upload = multer({storage: storage});
 
 router.post('/add', upload.single('image'), FoodControllers.createOne)
 router.get('/all', FoodControllers.getAll)
-//router.get('/getName', FoodControllers.getName)
+router.get('/getName/:name', FoodControllers.getName)
 router.get('/:id', FoodControllers.getOne)
 router.delete('/:id',  FoodControllers.deleteOne)
 
